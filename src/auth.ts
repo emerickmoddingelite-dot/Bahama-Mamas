@@ -39,6 +39,8 @@ async function fetchDiscordRoles(
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: "database" },
+  trustHost: true,
+  secret: process.env.AUTH_SECRET,
   providers: [
     Discord({
       clientId: process.env.AUTH_DISCORD_ID,
