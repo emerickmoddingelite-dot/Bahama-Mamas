@@ -16,7 +16,7 @@ export default async function Home() {
           Recrutements, démissions, réunions et annonces pour le serveur RolePlay.
         </p>
         {!session && (
-          <form action={async () => { "use server"; await signIn("discord", { redirectTo: "/" }); }} className="mt-6">
+          <form action={async () => { "use server"; await signIn("discord"); }} className="mt-6">
             <button className="btn-primary">Se connecter avec Discord</button>
           </form>
         )}
