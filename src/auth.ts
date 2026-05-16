@@ -45,10 +45,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     Discord({
       clientId: process.env.AUTH_DISCORD_ID,
       clientSecret: process.env.AUTH_DISCORD_SECRET,
-      authorization: {
-        url: "https://discord.com/api/oauth2/authorize",
-        params: { scope: "identify email guilds guilds.members.read" },
-      },
+      authorization: { params: { scope: "identify email guilds guilds.members.read" } },
     }),
   ],
   callbacks: {
@@ -63,13 +60,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       const guildId = process.env.DISCORD_GUILD_ID;
       const token = account.access_token;
-      if (!guildId || !token) return "/login?error=NoGuildConfig" as any;
+      if (!guildId || !token) return false;
 
       const roles = await fetchDiscordRoles(guildId, token);
-      if (!roles) return "/login?error=NotInGuild" as any;
+      if (!roles) return false;
 
-      const ok = roles.some((r) => ALLOWED_ROLE_IDS.includes(r));
-      return ok ? true : ("/login?error=NoAccess" as any);
+      return roles.some((r) => ALLOWED_ROLE_IDS.includes(r));
     },
     async session({ session, user }) {
       const dbUser = await prisma.user.findUnique({
@@ -105,5 +101,4 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       await prisma.user.update({ where: { id: user.id }, data });
     },
   },
-  pages: { signIn: "/login" },
 });

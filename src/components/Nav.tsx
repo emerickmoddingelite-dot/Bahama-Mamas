@@ -38,12 +38,12 @@ export default function Nav({ session }: { session: Session | null }) {
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={session.user.image} alt="" className="h-8 w-8 rounded-full ring-2 ring-bahama-500/50" />
               )}
-              <form action={async () => { "use server"; await signOut({ redirectTo: "/" }); }}>
+              <form action={async () => { "use server"; await signOut(); }}>
                 <button className="btn-secondary">Déconnexion</button>
               </form>
             </>
           ) : (
-            <form action={async () => { "use server"; await signIn("discord", { redirectTo: "/" }); }}>
+            <form action={async () => { "use server"; await signIn("discord"); }}>
               <button className="btn-primary">Se connecter avec Discord</button>
             </form>
           )}
